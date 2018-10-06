@@ -426,9 +426,15 @@ export class ImageCropperComponent implements OnChanges {
                 ctx.drawImage(this.originalImage, left, top, width, height, 0, 0, width * resizeRatio, height * resizeRatio);
                 const quality = Math.min(1, Math.max(0, this.imageQuality / 100));
                 const croppedImage = cropCanvas.toDataURL(`image/${this.format}`, quality);
+
                 if (croppedImage.length > 10) {
                     this.imageCroppedBase64.emit(croppedImage);
                 }
+
+                if (this.roundCropper) {
+                    ctx.arc(left + width / 2, top + height / 2, width / 2, 0, 2 * Math.PI);
+                }
+
                 cropCanvas.toBlob(
                     (fileImage: File) => this.imageCroppedFile.emit(fileImage),
                     `image/${this.format}`,
